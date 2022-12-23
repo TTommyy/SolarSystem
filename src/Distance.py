@@ -1,0 +1,12 @@
+# Distance of planets to Sun
+# In AU
+
+SUN = 0
+MERCURY = 0.387
+VENUS = 0.723
+EARTH = 1
+MARS = 1.523
+JUPITER = 5.202
+SATURN = 9.554
+URANUS = 19.181
+NEPTUNE = 30.058

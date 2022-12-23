@@ -3,21 +3,53 @@ import Mass
 import Eccentricity
 import datetime
 import time
+import Rotation
+import Distance
+import Radius
 
 class SolarSystem:
-    def __init__(self, startYear, startMonth, startDay):
+    def __init__(self, startYear = 2000, startMonth = 1, startDay = 1):
         self.star = None
         self.planets = []
         self.intialTime = datetime.date(startYear, startMonth, startDay)
         self.currentTime = self.intialTime
-    
+
     def setStar(self, star):
         self.star = star
 
-    def addPlanet(self, planet):
-        self.planets.append(planet)
+    def getStar(self):
+        return self.star
 
-def createSunEarthSystem(solarSystem):
-    solarSystem.star = Planet.Planet("Sun", Mass.SUN, Eccentricity.SUN,0,0)
-    solarSystem.planets = []
-    solarSystem.addPlanet(Planet.Planet("Earth", Mass.EARTH, Eccentricity.EARTH,300,100))
+    def addPlanet(self, name, mass, radius, eccentricity, x, y, color):
+        self.planets.append(Planet.Planet(name, mass, radius, eccentricity, x, y, color))
+
+    def getPlanets(self):
+        return self.planets
+
+    def clearPlanets(self):
+        self.planets = []
+
+    def resetTime(self):
+        self.currentTime = self.intialTime
+
+    def addDay(self):
+        self.currentTime += datetime.timedelta(days=1)
+
+    def createSunSolarSystem(self):
+        self.setStar(Planet.Planet("Sun", Mass.SUN, Radius.SUN, Eccentricity.SUN, 0, 0, "yellow"))
+        self.clearPlanets()
+        self.addPlanet("Mercury", Mass.MERCURY, Radius.MERCURY, Eccentricity.MERCURY, Distance.MERCURY, 0, "gray")
+        self.addPlanet("Venus", Mass.VENUS, Radius.VENUS, Eccentricity.VENUS, Distance.VENUS, 0, "orange")
+        self.addPlanet("Earth", Mass.EARTH, Radius.EARTH, Eccentricity.EARTH, Distance.EARTH, 0, "blue")
+        self.addPlanet("Mars", Mass.MARS, Radius.MARS, Eccentricity.MARS, Distance.MARS, 0, "red")
+        self.addPlanet("Jupiter", Mass.JUPITER, Radius.JUPITER, Eccentricity.JUPITER, Distance.JUPITER, 0, "orange")
+        self.addPlanet("Saturn", Mass.SATURN , Radius.SATURN, Eccentricity.SATURN, Distance.SATURN, 0, "tan")
+        self.addPlanet("Uranus", Mass.URANUS, Radius.URANUS, Eccentricity.URANUS, Distance.URANUS, 0, "lightblue")
+        self.addPlanet("Neptune", Mass.NEPTUNE, Radius.NEPTUNE, Eccentricity.NEPTUNE,  Distance.NEPTUNE, 0, "blue")
+        self.updatePositon()
+
+    def updatePositon(self):
+         for planet in self.planets:
+            planet.setPosition(Rotation.Rotation.calc_planet_position(planet, self.star.getMass(), self.currentTime))
+
+
