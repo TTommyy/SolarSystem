@@ -1,30 +1,32 @@
 import Mass
 
 class Planet:
-    def __init__(self, name, mass, radius, eccentricity, x, y, color):
+    def __init__(self, name, mass, radius, eccentricity, distance, color):
         self.name = name
         self.mass = mass
         self.radius = radius
         self.eccentricity = eccentricity
-        self.x = x
-        self.y = y
+        self.distance = distance
         self.color = color
+        self.position = [0, 0]
 
-    def setPosition(self, position):
-        self.x = position[0]
-        self.y = position[1]
-
-    def getPosition(self):
-        return [self.x, self.y]
-
-    def getX(self):
-        return self.x
-
-    def getY(self):
-        return self.y
+    def getName(self):
+        return self.name
 
     def getMass(self):
         return self.mass
 
+    def getRadius(self):
+        return self.radius
+
+    def getDistance(self):
+        return self.distance
+
     def getColor(self):
         return self.color
+
+    def setPosition(self, positon):
+        self.position = positon
+
+    def getPosition(self):
+        return self.position

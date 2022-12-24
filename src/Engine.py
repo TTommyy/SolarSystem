@@ -7,7 +7,7 @@ SCREEN_SIZE = 5000
 class Engine:
     def __init__(self, solarSystem):
         self.solarSystem = solarSystem
-        self.disConst = 40
+        self.disConst = 80
 
     def show(self):
         turtle.screensize(SCREEN_SIZE, SCREEN_SIZE)
@@ -26,13 +26,13 @@ class Engine:
             pl.shape(SHAPE)
             pl.color(planet.getColor())
             pl.penup()
-            pl.goto(planet.getX() * self.disConst, planet.getY() * self.disConst)
             pl.s_planet = planet
             self.planets.append(pl)
+        self.updatePositon()
 
     def updatePositon(self):
         for planet in self.planets:
-            planet.goto(planet.s_planet.getX() * self.disConst, planet.s_planet.getY() * self.disConst)
+            planet.goto( planet.s_planet.getPosition()[0] * self.disConst, planet.s_planet.getPosition()[1] * self.disConst)
 
     def draw(self):
         for planet in self.planets:
