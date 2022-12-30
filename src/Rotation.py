@@ -15,44 +15,59 @@ class Rotation:
 
     @staticmethod
     def calc_planet_position(planet, sun_mass, date):
-        # Get the planet Mean Distance from it's star
-        a = planet.getDistance()
 
         # Calculate the moment of intrest (in accuracy to one day here)
         time = Rotation.calc_delta_time(date)
         Rotation.log(planet, [" Time ", time])
 
-        # Calculate the gravitational constant
-        G = 6.674e-11  # m^3 / (kg * s^2)
+        # Get longtitude
+        longitude = math.radians(planet.getLongitude(time))
 
-        # Calculate the semi-major axis of the planet's orbit
-        # a = initial_position  / (1 - (planet.mass / sun_mass)) # Deprecated due to complex number bug
+        # Get inclination
+        inclination = math.radians(planet.getInclination(time))
+
+        # Get argument of perihelion
+        perihelion = math.radians(planet.getPerihelion(time))
+
+        # Get the planet Mean Distance from it's star
+        a = planet.getDistance()
+
+        # Get planet eccentricity
+        eccentricity = planet.getEntricity(time)
+
+        # Get planet mean anomaly
+        M = math.radians(planet.getMeanAnomaly(time))
+
+        # Calculate the gravitational constant
+        # G = 6.674e-11  # m^3 / (kg * s^2)
 
         # Calculate the planet's mean anomaly
-        M = (math.sqrt(G * sun_mass) * time) / (a**1.5)
+        # M = (math.sqrt(G * sun_mass) * time) / (a**1.5)
 
         # Calculate the planet's eccentric anomaly
-        #  E = Rotation.solve_kepler_equation(M, planet.eccentricity)
         try:
-            E = newton(Rotation.kepler_equation, M, args=(M, planet.eccentricity))
+            E = newton(Rotation.kepler_equation, M, args=(M, eccentricity))
             Rotation.log(planet, [" E ", E])
         except RuntimeError:
-            Rotation.log(planet, " Exeption in newton biscecton metod occured")
-            E = Rotation.solve_kepler_equation(M, planet.eccentricity)
+            Rotation.log(planet, " Exeption in newton metod occured")
+            E = Rotation.solve_kepler_equation(M, eccentricity)
             Rotation.log(planet, [" E ", E])
 
+        xv = a * (math.cos(E) - eccentricity)
+        yv = a * (math.sqrt(1.0 - eccentricity ** 2) * math.sin(E))
 
         # Calculate the planet's true anomaly
-        v = 2 * math.atan2(math.sqrt(1 + planet.eccentricity) * math.sin(E/2), math.sqrt(1 - planet.eccentricity) * math.cos(E/2))
+        v = 2 * math.atan2(yv, xv)
 
         # Calculate the planet's distance from the sun
-        r = (a * (1 - (planet.eccentricity**2))) / (1 + (planet.eccentricity * math.cos(v)))
+        r = math.sqrt(xv ** 2 + yv ** 2)
 
-        # Calculate the planet's position in Cartesian coordinates
-        x = r * math.cos(v)
-        y = r * math.sin(v)
+        # Rotate the planet's position in the x-y plane by the angle of the planet's longitude of the ascending node (N) and the angle of the planet's argument of perihelion (w)
+        x = r * (math.cos(longitude) * math.cos(v + perihelion) - math.sin(longitude) * math.sin(v + perihelion) * math.cos(inclination))
+        y = r * (math.sin(longitude) * math.cos(v + perihelion) + math.cos(longitude) * math.sin(v + perihelion) * math.cos(inclination))
+        z = r * (math.sin(v + perihelion) * math.sin(inclination))
 
-        return [x, y]
+        return [x, y, z]
 
     @staticmethod
     def solve_kepler_equation(M, e):
@@ -79,6 +94,6 @@ class Rotation:
         y = date.year
         m = date.month
         d = date.day
-        # return 367*y - 7 * ( y + (m+9)//12 ) // 4 - 3 * \
-        #     ( ( y + (m-9)//7 ) // 100 + 1 ) // 4 + 275*m//9 + d - 730515
-        return 367*y - 7 * ( y + (m+9)//12 ) // 4 + 275*m//9 + d - 730530
+        return 367*y - 7 * ( y + (m+9)//12 ) // 4 - 3 * \
+            ( ( y + (m-9)//7 ) // 100 + 1 ) // 4 + 275*m//9 + d - 730515
+        # return 367*y - 7 * ( y + (m+9)//12 ) // 4 + 275*m//9 + d - 730530

@@ -2,12 +2,12 @@ import SolarSystem
 import turtle
 
 SHAPE = "circle"
-SCREEN_SIZE = 5000
+SCREEN_SIZE = 2000
 
 class Engine:
     def __init__(self, solarSystem):
         self.solarSystem = solarSystem
-        self.disConst = 80
+        self.disConst = 280
 
     def show(self):
         turtle.screensize(SCREEN_SIZE, SCREEN_SIZE)
@@ -29,6 +29,7 @@ class Engine:
             pl.s_planet = planet
             self.planets.append(pl)
         self.updatePositon()
+        self.draw()
 
     def updatePositon(self):
         for planet in self.planets:

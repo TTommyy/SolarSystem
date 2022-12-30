@@ -1,11 +1,15 @@
 import Planet
-import Mass
-import Eccentricity
+import PlanetData.Mass
+import PlanetData.Distance
+import PlanetData.Eccentricity
+import PlanetData.Inclination
+import PlanetData.Longitude
+import PlanetData.MeanAnomaly
+import PlanetData.Perihelion
+import PlanetData.Radius
 import datetime
 import time
 import Rotation
-import Distance
-import Radius
 
 class SolarSystem:
     def __init__(self, startYear = 2000, startMonth = 1, startDay = 1):
@@ -21,8 +25,8 @@ class SolarSystem:
     def getStar(self):
         return self.star
 
-    def addPlanet(self, name, mass, radius, eccentricity, distance, color):
-        self.planets.append(Planet.Planet(name, mass, radius, eccentricity, distance, color))
+    def addPlanet(self, name, mass, radius, longitude, inclination, perihelion, distance, eccentricity, meanAnomaly, color):
+        self.planets.append(Planet.Planet( name, mass, radius, longitude, inclination, perihelion, distance, eccentricity, meanAnomaly, color))
 
     def getPlanets(self):
         return self.planets
@@ -37,13 +41,16 @@ class SolarSystem:
         self.currentTime += datetime.timedelta(days=1)
 
     def createSunSolarSystem(self):
-        self.setStar(Planet.Planet("Sun", Mass.SUN, Radius.SUN, Eccentricity.SUN, 0, "yellow"))
+        self.setStar(Planet.Planet("Sun", PlanetData.Mass.SUN, 0, 0, 0, 0, 0, 0, 0, "yellow"))
 
         self.clearPlanets()
-        self.addPlanet("Mercury", Mass.MERCURY, Radius.MERCURY, Eccentricity.MERCURY, Distance.MERCURY, "gray")
-        self.addPlanet("Venus", Mass.VENUS, Radius.VENUS, Eccentricity.VENUS, Distance.VENUS, "orange")
-        self.addPlanet("Earth", Mass.EARTH, Radius.EARTH, Eccentricity.EARTH, Distance.EARTH, "blue")
-        self.addPlanet("Mars", Mass.MARS, Radius.MARS, Eccentricity.MARS, Distance.MARS, "red")
+        self.addPlanet("Mercury", PlanetData.Mass.MERCURY, PlanetData.Radius.MERCURY, PlanetData.Longitude.MERCURY, PlanetData.Inclination.MERCURY, \
+            PlanetData.Perihelion.MERCURY, PlanetData.Distance.MERCURY, PlanetData.Eccentricity.MERCURY, PlanetData.MeanAnomaly.MERCURY, "gray")
+        self.addPlanet("Venus", PlanetData.Mass.VENUS, PlanetData.Radius.VENUS, PlanetData.Longitude.VENUS, PlanetData.Inclination.VENUS, \
+            PlanetData.Perihelion.VENUS, PlanetData.Distance.VENUS, PlanetData.Eccentricity.VENUS, PlanetData.MeanAnomaly.VENUS, "orange")
+        # self.addPlanet("Earth", Mass.EARTH, Radius.EARTH, Eccentricity.EARTH, Distance.EARTH, "blue")
+        self.addPlanet("Mars",PlanetData.Mass.MARS, PlanetData.Radius.MARS, PlanetData.Longitude.MARS, PlanetData.Inclination.MARS, \
+            PlanetData.Perihelion.MARS, PlanetData.Distance.MARS, PlanetData.Eccentricity.MARS, PlanetData.MeanAnomaly.MARS, "red")
         # self.addPlanet("Jupiter", Mass.JUPITER, Radius.JUPITER, Eccentricity.JUPITER, Distance.JUPITER, "orange")
         # self.addPlanet("Saturn", Mass.SATURN , Radius.SATURN, Eccentricity.SATURN, Distance.SATURN, "tan")
         # self.addPlanet("Uranus", Mass.URANUS, Radius.URANUS, Eccentricity.URANUS, Distance.URANUS, "lightblue")
