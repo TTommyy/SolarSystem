@@ -38,12 +38,6 @@ class Rotation:
         # Get planet mean anomaly
         M = math.radians(planet.getMeanAnomaly(time))
 
-        # Calculate the gravitational constant
-        # G = 6.674e-11  # m^3 / (kg * s^2)
-
-        # Calculate the planet's mean anomaly
-        # M = (math.sqrt(G * sun_mass) * time) / (a**1.5)
-
         # Calculate the planet's eccentric anomaly
         try:
             E = newton(Rotation.kepler_equation, M, args=(M, eccentricity))

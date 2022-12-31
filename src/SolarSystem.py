@@ -37,8 +37,11 @@ class SolarSystem:
     def resetTime(self):
         self.currentTime = self.intialTime
 
-    def addDay(self):
-        self.currentTime += datetime.timedelta(days=1)
+    def addDay(self, number_of_days):
+        self.currentTime += datetime.timedelta(days = number_of_days)
+
+    def getDate(self):
+        return self.currentTime
 
     def createSunSolarSystem(self):
         self.setStar(Planet.Planet("Sun", PlanetData.Mass.SUN, 0, 0, 0, 0, 0, 0, 0, "yellow"))
@@ -48,16 +51,17 @@ class SolarSystem:
             PlanetData.Perihelion.MERCURY, PlanetData.Distance.MERCURY, PlanetData.Eccentricity.MERCURY, PlanetData.MeanAnomaly.MERCURY, "gray")
         self.addPlanet("Venus", PlanetData.Mass.VENUS, PlanetData.Radius.VENUS, PlanetData.Longitude.VENUS, PlanetData.Inclination.VENUS, \
             PlanetData.Perihelion.VENUS, PlanetData.Distance.VENUS, PlanetData.Eccentricity.VENUS, PlanetData.MeanAnomaly.VENUS, "orange")
-        # self.addPlanet("Earth", Mass.EARTH, Radius.EARTH, Eccentricity.EARTH, Distance.EARTH, "blue")
+        self.addPlanet("Earth", PlanetData.Mass.EARTH, PlanetData.Radius.EARTH, PlanetData.Longitude.EARTH, PlanetData.Inclination.EARTH, \
+            PlanetData.Perihelion.EARTH, PlanetData.Distance.EARTH, PlanetData.Eccentricity.EARTH, PlanetData.MeanAnomaly.EARTH, "blue")
         self.addPlanet("Mars",PlanetData.Mass.MARS, PlanetData.Radius.MARS, PlanetData.Longitude.MARS, PlanetData.Inclination.MARS, \
             PlanetData.Perihelion.MARS, PlanetData.Distance.MARS, PlanetData.Eccentricity.MARS, PlanetData.MeanAnomaly.MARS, "red")
         # self.addPlanet("Jupiter", Mass.JUPITER, Radius.JUPITER, Eccentricity.JUPITER, Distance.JUPITER, "orange")
         # self.addPlanet("Saturn", Mass.SATURN , Radius.SATURN, Eccentricity.SATURN, Distance.SATURN, "tan")
         # self.addPlanet("Uranus", Mass.URANUS, Radius.URANUS, Eccentricity.URANUS, Distance.URANUS, "lightblue")
         # self.addPlanet("Neptune", Mass.NEPTUNE, Radius.NEPTUNE, Eccentricity.NEPTUNE,  Distance.NEPTUNE, "blue")
-        self.updatePositon()
+        self.updatePosition()
 
-    def updatePositon(self):
+    def updatePosition(self):
          for planet in self.planets:
             planet.setPosition(Rotation.Rotation.calc_planet_position(planet, self.star.getMass(), self.currentTime))
             print(planet.name + " to pos: " , planet.getPosition())
